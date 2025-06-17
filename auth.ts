@@ -24,6 +24,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         if (user.length === 0) return null;
 
+        console.log(
+          credentials.password.toString(),
+          user[0].password,
+          "@@@@@@@@@"
+        );
         const isPasswordValid = await compare(
           credentials.password.toString(),
           user[0].password

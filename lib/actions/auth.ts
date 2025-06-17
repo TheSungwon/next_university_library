@@ -37,11 +37,13 @@ export const signUp = async (params: AuthCredentials) => {
     .where(eq(users.email, email))
     .limit(1);
 
+  console.log(existingUser.length, "@@@@@@@@");
   if (existingUser.length > 0) {
     return { success: false, error: "이미 존재하는 유저입니다." };
   }
 
   const hashedPassword = await hash(password, 10);
+  console.log(hashedPassword, "@@@@@@@@@");
 
   try {
     await db.insert(users).values({

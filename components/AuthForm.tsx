@@ -20,7 +20,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -30,6 +29,8 @@ import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
 import ImageUpload from "./ImageUpload";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 //npx shadcn@latest add form
 //npx shadcn@latest add input
@@ -51,6 +52,7 @@ const AuthForm = <T extends FieldValues>({
   defaultValues,
   onSubmit,
 }: Props<T>) => {
+  const router = useRouter();
   const isSignIn = type === "SIGN_IN";
 
   // useForm 훅을 통해 폼 컨트롤러 생성
@@ -65,6 +67,18 @@ const AuthForm = <T extends FieldValues>({
   const handleSubmit: SubmitHandler<T> = async (data) => {
     // 여기서 data는 T 타입으로 자동완성 제공
     // 타입스크립트가 자동으로 필드 타입을 추론하여 안전한 접근 가능
+    const result = await onSubmit(data);
+    if (result.success) {
+      toast.success(isSignIn ? "로그인 성공" : "회원가입 성공", {
+        description: "환영합니다!",
+      });
+
+      router.push("/");
+    } else {
+      toast.error("에러가 발생했습니다.", {
+        description: result.error,
+      });
+    }
   };
 
   return (

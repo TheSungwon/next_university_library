@@ -7,7 +7,7 @@ import Image from "next/image";
 
 const Header = () => {
   const pathname = usePathname();
-  console.log(pathname);
+
   return (
     <header className="my-10 flex justify-between gap-5">
       <Link href="/">
